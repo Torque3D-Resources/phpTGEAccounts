@@ -1,0 +1,29 @@
+---------------phpTGEAccounts---------------
+You will need:
+-- Webserver (Apache preferred)
+-- PHP 4+ (not tested with PHP 5)
+-- MySQL[preferred] or any other database system supported by ADOdb (Only tested with MySQL)
+-- Smarty[http://smarty.php.net] (Releases contain a copy of this, and a config.php file edited with the proper information)
+-- ADOdb[http://adodb.sourceforge.net] (Release contain a copy of this, and a config.php file edited with the proper information)
+=============================================
+From a Release:
+-- Extract the gzipped tarball or zip and extract it somewhere on your webroot.
+-- Using phpMyAdmin[http://phpmyadmin.net] or any database management system, put the information from "phptgeaccounts.sql" into your database.
+-- See "General Install:"
+
+From CVS:
+-- Take the contents of the src/ directory, and put it somewhere on your webroot.
+-- Download Smarty from http://smarty.php.net.
+-- Extract Smarty to the directory where you put the files from the src/ directory.
+-- Edit the "define('SMARTY_DIR'..." line in config.php, change the second argument to point to the Smarty-<version>/libs/ directory. Remember trailing slash!
+-- Download ADOdb from http://adodb.sourceforge.net.
+-- Extract ADOdb to the directory where you put the files from the src/ directory.
+-- Edit the "define('ADODB_DIR'..." line in config.php, change the second argument to point to the adodb/ directory (by default, from the ADOdb source distro). Remember the trailing slash!
+-- See "General Install:"
+
+General Install:
+-- Edit "config.php" and fill in the $cfg associative array with the correct information.
+-- Load up the index.php page in your webbrowser, making sure you enter the correct URL.
+-- Make a test account (register.php or click "Create an Account") then try to log in (login.php or click "Manage your Account").
+---- If you do not get a database error, all should be good.
+---- If you get a database error, you may need to edit your config.php file.
