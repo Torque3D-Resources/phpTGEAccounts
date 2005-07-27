@@ -1,0 +1,29 @@
+/*{literal}*/
+body
+{
+	background-color: #E5E5E5;
+}
+
+.main
+{
+	background-color: #FFFFFF;
+	border: 1px outset #98AAB1;
+}
+
+.paneltitle
+{
+	background-color: #999999;
+	color: #FFFFFF;
+}
+
+.panelbody
+{
+	border: 1px dashed #98AAB1;
+/*
+	border-top: 2px dashed #98AAB1;
+	border-bottom: 2px dashed #98AAB1;
+	border-left: 2px dashed #98AAB1;
+	border-right: 2px dashed #98AAB1;
+*/
+}
+/*{/literal}*/
