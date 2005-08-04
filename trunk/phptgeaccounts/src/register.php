@@ -40,7 +40,7 @@ validatePass($pass, $passConf);
 validateEmail($email);
 
 // Check password and username match
-$db = &ADONewConnection('mysql');
+$db = &ADONewConnection($cfg['db_type']);
 $db->Connect($cfg['db_host'], $cfg['db_user'], $cfg['db_pass'], $cfg['db_name']);
 
 // Check to see if the username is already in the database

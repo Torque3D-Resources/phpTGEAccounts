@@ -13,12 +13,18 @@
 # Structure of Tables
 CREATE TABLE account 
 (
-   userid MEDIUMINT(9) NOT NULL AUTO_INCREMENT,
-   username VARCHAR(32) NOT NULL DEFAULT '',
-   password VARCHAR(32) NOT NULL DEFAULT '',
-   name_first VARCHAR(40) NOT NULL DEFAULT '',
-   name_last VARCHAR(40) NOT NULL DEFAULT '',
-   email VARCHAR(40) NOT NULL DEFAULT '',
-   PRIMARY KEY (userid),
-   UNIQUE KEY userid (userid, username)
+    userid MEDIUMINT(9) NOT NULL AUTO_INCREMENT,
+    username VARCHAR(32) NOT NULL DEFAULT '',
+    password VARCHAR(32) NOT NULL DEFAULT '',
+    name_first VARCHAR(40) NOT NULL DEFAULT '',
+    name_last VARCHAR(40) NOT NULL DEFAULT '',
+    email VARCHAR(40) NOT NULL DEFAULT '',
+    PRIMARY KEY (userid),
+    UNIQUE KEY userid (userid, username)
+);
+
+CREATE TABLE config
+(
+    name VARCHAR(255) NOT NULL DEFAULT '',
+    entry VARCHAR(255) NOT NULL DEFAULT ''
 );
