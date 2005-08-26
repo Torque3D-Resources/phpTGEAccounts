@@ -12,8 +12,10 @@ Permission is granted to anyone to use this software for any purpose, including 
 
     3. This notice may not be removed or altered from any source distribution.
 */
-require_once("config.php");
-require_once("includes/commonFunctions.php");
+require('config.php');
+require('constants.php');
+require('includes/commonFunctions.php');
+require(ADODB_DIR . 'adodb.inc.php');
 
 if(checkEmpty($_GET["valid"]))
 {
@@ -32,8 +34,6 @@ $passConf = $_GET["passConf"];
 $name_first = $_GET["name_first"];
 $name_last = $_GET["name_last"];
 $email = $_GET["email"];
-$forGame = $_GET["forGame"];
-settype($forGame, "bool");
 
 validateData(array($user, $pass, $name_first, $name_last, $email));
 validatePass($pass, $passConf);
@@ -57,45 +57,39 @@ $md5pass = md5($pass);
 $rs = $db->Execute("INSERT INTO account(`username`, `password`, `name_first`, `name_last`, `email`) VALUES('$user', '$md5pass', '$name_first', '$name_last', '$email');");
 if (!$rs)
 {
-	error("Database Error", $db->ErrorMsg(), $forGame);
+	error("Database Error", $db->ErrorMsg());
 }
-success("Registration Successful", "Congratulations! Your account (".$user.") is ready to be used with the password provided.", $forGame);
+success("Registration Successful", "Congratulations! Your account (".$user.") is ready to be used with the password provided.");
 
 function validatePass($password, $password_conf)
 {
-	global $forGame;
-
 	if($password != $password_conf)
 	{
-		error("Passwords Do Not Match", "Sorry, but the passwords you entered do not match.\n\n<a href=\"register.php?user=".$_GET["user"]."&name_first=".$_GET["name_first"]."&name_last=".$_GET["name_last"]."&email=".$_GET["email"]."\">Go Back</a>", $forGame);
+		error("Passwords Do Not Match", "Sorry, but the passwords you entered do not match.\n\n<a href=\"".$_SERVER['PHP_SELF']."?user=".$_GET["user"]."&name_first=".$_GET["name_first"]."&name_last=".$_GET["name_last"]."&email=".$_GET["email"]."\">Go Back</a>");
 	}
 }
 
 function validateEmail($e_mail)
 {
-	global $forGame;
-
-	if(!(strstr($e_mail, "@") && strstr($e_mail, ".")))
+	if(!(strstr($e_mail, "@") && strstr($e_mail, "."))) // Just make sure the email address has a "@" and a ".". A RegExp parse would be better...
 	{
-		error("E-Mail Is Not Valid", "Sorry, but the e-mail you provided is invalid.\n\n<a href=\"register.php?user=".$_GET["user"]."&name_first=".$_GET["name_first"]."&name_last=".$_GET["name_last"]."&email=".$_GET["email"]."\">Go Back</a>", $forGame);
+		error("E-Mail Is Not Valid", "Sorry, but the e-mail you provided is invalid.\n\n<a href=\"".$_SERVER['PHP_SELF']."?user=".$_GET["user"]."&name_first=".$_GET["name_first"]."&name_last=".$_GET["name_last"]."&email=".$_GET["email"]."\">Go Back</a>");
 	}
 }
 
 function checkForDouble($row, $type = "username")
 {
-	global $forGame;
-	
 	switch($type)
 	{
 		case "username":
 			if($row->fields['username'])
 			{
-				error("Username Is Already In Use", "Sorry, but the username you chose is already being used.\n\n<a href=\"register.php?name_first=".$_GET["name_first"]."&name_last=".$_GET["name_last"]."&email=".$_GET["email"]."\">Go Back</a>", $forGame);
+				error("Username Is Already In Use", "Sorry, but the username you chose is already being used.\n\n<a href=\"".$_SERVER['PHP_SELF']."?name_first=".$_GET["name_first"]."&name_last=".$_GET["name_last"]."&email=".$_GET["email"]."\">Go Back</a>");
 			}
 		case "email":
 			if($row->fields['email'])
 			{
-				error("E-Mail Is Already In Use", "Sorry, but the e-mail you chose is already being used.\n\n<a href=\"register.php?user=".$_GET["user"]."&name_first=".$_GET["name_first"]."&name_last=".$_GET["name_last"]."\">Go Back</a>", $forGame);
+				error("E-Mail Is Already In Use", "Sorry, but the e-mail you chose is already being used.\n\n<a href=\"".$_SERVER['PHP_SELF']."?user=".$_GET["user"]."&name_first=".$_GET["name_first"]."&name_last=".$_GET["name_last"]."\">Go Back</a>");
 			}
 	}
 }

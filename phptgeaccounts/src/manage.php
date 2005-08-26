@@ -12,8 +12,10 @@ Permission is granted to anyone to use this software for any purpose, including 
 
     3. This notice may not be removed or altered from any source distribution.
 */
-require_once('config.php');
-require_once("includes/commonFunctions.php");
+require('config.php');
+require('constants.php');
+require('includes/commonFunctions.php');
+require(ADODB_DIR . 'adodb.inc.php');
 
 if(checkEmpty($_GET['userid']) && checkEmpty($_COOKIE['userid']))
 {
@@ -73,8 +75,6 @@ $newPassConf = $_GET['newPassConf'];
 $name_first = $_GET['name_first'];
 $name_last = $_GET['name_last'];
 $email = $_GET['email'];
-$forGame = $_GET['forGame'];
-settype($forGame, "bool");
 
 $db = &ADONewConnection('mysql');
 $db->Connect($cfg['db_host'], $cfg['db_user'], $cfg['db_pass'], $cfg['db_name']);
@@ -95,11 +95,11 @@ switch($_action)
 				$md5newPass = md5($newPass);
 				$db->Execute("UPDATE `account` SET `password`='$md5newPass' WHERE `userid`=$userid");
 				setcookie('userid', '', (time() - 3600));
-				success("Password Changed", "Congratulations! Your password was changed.", $forGame);
+				success("Password Changed", "Congratulations! Your password was changed.");
 			}
-			error("Passwords Do Not Match", "Sorry, the new passwords you provided do not match.\n\n<a href=\"manage.php?action=changePass\">Go Back</a>", $forGame);
+			error("Passwords Do Not Match", "Sorry, the new passwords you provided do not match.\n\n<a href=\"".$_SERVER['PHP_SELF']."?action=changePass\">Go Back</a>");
 		}
-		error("Invalid Password", "Sorry, the password you provided is not correct.\n\n<a href=\"manage.php?action=changePass\">Go Back</a>", $forGame);
+		error("Invalid Password", "Sorry, the password you provided is not correct.\n\n<a href=\"".$_SERVER['PHP_SELF']."?action=changePass\">Go Back</a>");
 		break;
 	case "edit":
 		$rs = $db->Execute("SELECT * FROM `account` WHERE `userid`='$userid'");
@@ -111,9 +111,9 @@ switch($_action)
 		if($rs->fields['password'] == md5($oldPass))
 		{
 			$db->Execute("UPDATE `account` SET `username`='$user', `name_first`='$name_first', `name_last`='$name_last', `email`='$email' WHERE `userid`=$userid");
-			success("Information Updated", "Congratulations! Your information has been updated.", $forGame);
+			success("Information Updated", "Congratulations! Your information has been updated.");
 		}
-		error("Invalid Password", "Sorry, the password you provided is not correct.\n\n<a href=\"manage.php?action=edit\">Go Back</a>", $forGame);
+		error("Invalid Password", "Sorry, the password you provided is not correct.\n\n<a href=\"".$_SERVER['PHP_SELF']."?action=edit\">Go Back</a>");
 		break;
 	default:
 		break;
