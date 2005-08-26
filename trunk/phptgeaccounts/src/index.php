@@ -12,8 +12,9 @@ Permission is granted to anyone to use this software for any purpose, including 
 
     3. This notice may not be removed or altered from any source distribution.
 */
-require_once('config.php');
-require_once("includes/commonFunctions.php");
+require('config.php');
+require('constants.php');
+require('includes/commonFunctions.php');
 
 $tpl->assign('title', 'Index'); // Sets the title of the page
 $tpl->display('index.tpl'); // Renders the page

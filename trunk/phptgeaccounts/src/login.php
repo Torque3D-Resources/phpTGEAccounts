@@ -12,8 +12,10 @@ Permission is granted to anyone to use this software for any purpose, including 
 
     3. This notice may not be removed or altered from any source distribution.
 */
-require_once("config.php");
-require_once("includes/commonFunctions.php");
+require('config.php');
+require('constants.php');
+require('includes/commonFunctions.php');
+require(ADODB_DIR . 'adodb.inc.php');
 
 if(checkEmpty($_GET["valid"]))
 {
@@ -25,8 +27,6 @@ if(checkEmpty($_GET["valid"]))
 
 $user = $_GET["user"];
 $pass = $_GET["pass"];
-$forGame = $_GET["forGame"];
-settype($forGame, "bool");
 
 validateData(array($user, $pass));
 
@@ -36,6 +36,11 @@ $db->Connect($cfg['db_host'], $cfg['db_user'], $cfg['db_pass'], $cfg['db_name'])
 
 $rs = $db->Execute("SELECT * FROM `account` WHERE `username`='$user'");
 
+if(!$rs)
+{
+    error("Database Error", $db->ErrorMsg());
+}
+
 $dbpass = $rs->fields['password'];
 $userid = $rs->fields['userid'];
 
@@ -43,11 +48,11 @@ $md5pass = md5($pass);
 
 if($md5pass != $dbpass)
 {
-	error("Incorrect Username or Password", "Sorry, either you username or password is incorrect.\n\n<a href=\"login.php?user=".$_GET["user"]."\">Go Back</a>", $forGame);
+	error("Incorrect Username or Password", "Sorry, either you username or password is incorrect.\n\n<a href=\"".$_SERVER['PHP_SELF']."?user=".$_GET["user"]."\">Go Back</a>");
 }
 
 // Advise Server of verified data
 $nextHour = time() + (60 * 60); // 60 Minutes, 60 Seconds
 setcookie('userid', $userid, $nextHour);
-success("Verified Account\t$userid", "Congratulations! The account information provided is correct.", $forGame);
+success("Verified Account", "Congratulations! The account information provided is correct.");
 ?>

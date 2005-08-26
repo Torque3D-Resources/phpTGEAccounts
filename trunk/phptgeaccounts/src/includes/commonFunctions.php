@@ -37,45 +37,51 @@ function checkEmpty($data, $isArray = false)
 	}
 }
 
-function error($title, $text, $forGame = false)
+// Smarty based error page
+function error($title, $text)
 {
 	global $tpl;
 
-	if(!$forGame)
-	{
-		templateAssign(array('headerTitle' => 'Error', 'outputTitle' => $title, 'outputBody' => $text), 'output.tpl');
-		exit();
-	}
-	else
-	{
-		templateAssign(array('outputPrefix' => '-ERR', 'outputBody' => $title), 'outputForGame.tpl');
-		exit();
-	}
+    templateAssign(array('headerTitle' => 'Error', 'outputTitle' => $title, 'outputBody' => $text), 'output.tpl');
+    exit();
 }
 
-function success($title, $text, $forGame = false)
+// Smarty based success page
+function success($title, $text)
 {
 	global $tpl;
 
-	if(!$forGame)
-	{
-		templateAssign(array('headerTitle' => 'Success', 'outputTitle' => $title, 'outputBody' => $text), 'output.tpl');
-		exit();
-	}
-	else
-	{
-		templateAssign(array('outputPrefix' => '+OK', 'outputBody' => $title), 'outputForGame.tpl');
-		exit();
-	}
+    templateAssign(array('headerTitle' => 'Success', 'outputTitle' => $title, 'outputBody' => $text), 'output.tpl');
+    exit();
+}
+
+// Game interface error
+function gameError($text)
+{
+	echo("-ERR $text");
+    exit();
+}
+
+// Game interface success
+function gameSuccess($text)
+{
+	echo("+OK $text");
+    exit();
 }
 
 function validateData($array)
 {
-	global $forGame;
-
 	if(checkEmpty($array, true))
 	{
-		error("Missing Information", "Sorry, but you are missing some information.", $forGame);
+		error("Missing Information", "Sorry, but you are missing some information.");
+	}
+}
+
+function validateGameData($array)
+{
+	if(checkEmpty($array, true))
+	{
+		gameError("Missing Information");
 	}
 }
 
